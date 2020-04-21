@@ -9,6 +9,8 @@ class SpacePhoto extends Model
     //
     protected $guard = [];
 
+    // protected $fillable = ['path'];
+
     public function space()
     {
         return $this->belongsTo(Space::class, 'space_id', 'id');

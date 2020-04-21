@@ -8,6 +8,10 @@ class Space extends Model
 {
    protected $guard = [];
 
+   protected $fillable = [
+    'title', 'address', 'description','latitude','longitude','photo'
+];
+
    public function photos()
    {
        return $this->hasMany(SpacePhoto::class, 'space_id', 'id');
@@ -17,4 +21,35 @@ class Space extends Model
    {
        return $this->belongsTo(User::class, 'user_id', 'id');
    }
+
+//    public function getSpaces($latitude, $longitude, $radius)
+//    {
+//        return $this->select('spaces.*')->selectRaw(
+//            '(6371 * 
+//            acos(cos( radians(?)) *
+//                 cos( radians(latitude) ) *
+//                 cos( radians(longitude) - radians(?) ) +
+//                 sin( radians(?) ) *
+//                 sin( radians( latitude ) )
+//                 )
+//            ) AS distance',[$latitude, $longitude, $radius]
+//         )->havingRaw("distance < ?", [$radius])
+//         ->orderBy('distance', 'asc');
+//    }
+    public function getSpaces($latitude, $longitude, $radius)
+    {
+        return $this->select('spaces.*')
+            ->selectRaw(
+                '( 6371 *
+                    acos( cos( radians(?) ) *
+                        cos( radians( latitude ) ) *
+                        cos( radians(longitude ) - radians(?)) +
+                        sin( radians(?) ) *
+                        sin( radians( latitude ) )
+                    )
+                ) AS distance', [$latitude, $longitude, $latitude]
+            )
+            ->havingRaw("distance < ?", [$radius])
+            ->orderBy('distance', 'asc');
+    }   
 }
