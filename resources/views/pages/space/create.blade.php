@@ -8,6 +8,12 @@
             <div class="card">
                 <div class="card-header">Submit My Space</div>
                 <div class="card-body">
+                    @if($errors->any())
+                        @foreach($errors->all() as $error)
+                            {{$error}}
+                        @endforeach
+                    @endif
+
                     {!! Form::open(['route' => 'space.store' , 'method' => 'post' , 'files' => true ]) !!}
 
                         <div class="form-group">
@@ -80,7 +86,7 @@
                         <div class="form-group increment">
                             <label for="">Photo</label>
                             <div class="input-group">
-                                <input type="file" name="photo[]" id="photo" class="form-control">
+                                <input type="file" name="photo[]" multiple class="form-control">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-primary btn-add"><i class="fas fa-plus-square"></i></button>
                                 </div>
@@ -95,7 +101,7 @@
                         @endif
                         <div class="clone invisible">
                             <div class="input-group mt-2">
-                                <input type="file" name="photo[]" id="photo" class="form-control">
+                                <input type="file" name="photo[]" class="form-control">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-danger btn-remove"><i class="fas fa-minus-square"></i></button>
                                 </div>

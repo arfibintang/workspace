@@ -47,6 +47,7 @@ class SpaceController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request,[
             'title' => ['required','min:3'],
             'address' => ['required','min:5'],
@@ -54,9 +55,10 @@ class SpaceController extends Controller
             'latitude' => ['required'],
             'longitude' => ['required'],
             'photo' => ['required'],
-            'photo.*' => ['mimes:jpg,png']
+            'photo.*' => ['mimes:jpg,png,jpeg']
         ]);
-        $request->user()->spaces()->create($request->except('photo'));
+        
+        $space = $request->user()->spaces()->create($request->except('photo'));
 
         $spacePhotos = [];
 
